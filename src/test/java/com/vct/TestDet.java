@@ -11,7 +11,9 @@ public class TestDet {
 
     @Test
     void testaMaisZeros() {
-        Assertions.assertEquals(2, Matriz.meuInicializa().contaZeros());
+        Matriz mt = Matriz.meuInicializa();
+        mt.contaZeros();
+        Assertions.assertEquals(0, mt.getIndexMaisZeros());
     }
 
 }

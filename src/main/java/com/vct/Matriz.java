@@ -1,11 +1,19 @@
 package com.vct;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Random;
 
+
+@Getter
+@Setter
 class Matriz {
 	private int[][] mat;
 	private int tamLinha;
 	private int tamColuna;
+	private boolean linha;
+	private int indexMaisZeros;
 
 	Matriz(){
 		mat = new int[6][6];
@@ -18,6 +26,7 @@ class Matriz {
 		this.setTamanhoLinha(numLinhas);	
 		this.setTamanhoColuna(numColunas);
 	}
+
 
 
 	public int getValor(int indiceI,int indiceJ){
@@ -136,13 +145,25 @@ class Matriz {
 		numC = this.getTamanhoColuna();
 
 		resposta = 0;
-		for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
-			cofator = mat.getValor(0,contC);
-			sinal = this.calculaSinal(0,contC);
-			matmenor = new Matriz(numL-1,numC-1);
-			this.copiaMatrizMaiorParaMenor(mat,matmenor,0,contC);
-			detTemp = matmenor.determinante();
-			resposta = resposta + (cofator * sinal * detTemp);
+		if(this.isLinha()) {
+			for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
+				cofator = mat.getValor(this.getIndexMaisZeros(),contC);
+				sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
+				matmenor = new Matriz(numL-1,numC-1);
+				this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
+				detTemp = matmenor.determinante();
+				resposta = resposta + (cofator * sinal * detTemp);
+			}
+		}
+		else {
+			for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
+				cofator = mat.getValor(this.getIndexMaisZeros(),contC);
+				sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
+				matmenor = new Matriz(numL-1,numC-1);
+				this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
+				detTemp = matmenor.determinante();
+				resposta = resposta + (cofator * sinal * detTemp);
+			}
 		}
 		return (resposta);
 	}
@@ -173,43 +194,36 @@ class Matriz {
 
 		return det;
 	}
-	/*
-	public int contaZeros() {
+
+	public void contaZeros() {
 		int maisZeros = 0;
 		int index = 0;
-		int count;
-		for(int i = 0; i < this.getTamanhoLinha(); i++) {
-			count = 0;
-			for(int j = 0; j < this.getTamanhoColuna(); j++) {
-				if (this.getValor(i, j) == 0) {
-					count++;
+		int countC, countL, i, j;
+
+		for(i = 0; i < this.getTamanhoLinha(); i++) {
+			countC = 0;
+			countL = 0;
+			for(j = 0; j < this.getTamanhoColuna(); j++) {
+				if(this.getValor(i, j) == 0) countL++;
+				if(this.getValor(j, i) == 0) countC++;
+				if(countC > maisZeros) {
+					maisZeros = countC;
+					index = j;
+					this.setLinha(false);
+				} else if (countL > maisZeros){
+					maisZeros = countL;
+					index = i;
+					this.setLinha(true);
 				}
 			}
-			if(count > maisZeros) {
-				maisZeros = count;
-				index = i;
-			}
 		}
-		for(int i = 0; i < this.getTamanhoLinha(); i++) {
-			count = 0;
-			for(int j = 0; j < this.getTamanhoColuna(); j++) {
-				if (this.getValor(j, i) == 0) {
-					count++;
-				}
-			}
-			if(count > maisZeros) {
-				maisZeros = count;
-				index = i;
-			}
-		}
-		return index;
 	}
 
 	public static Matriz meuInicializa() {
 		Matriz mt = new Matriz(3, 3);
-		mt.setValor(0 , 0 , 1);
-		mt.setValor(0, 1, 2);
-		mt.setValor(0, 2, 1);
+		mt.setValor(0 , 0 , 0);
+		mt.setValor(0, 1, 0);
+		mt.setValor(0, 2, 0);
 		mt.setValor(1 , 0 , 0);
 		mt.setValor(1, 1, 1);
 		mt.setValor(1, 2, 0);
@@ -218,10 +232,9 @@ class Matriz {
 		mt.setValor(2, 2, 0);
 		return mt;
 	}
-	*/
+
 
 	public int detOrdem3(Matriz mat) {
-
 		return 	(getValor(0, 0) * getValor(1, 1)
 				* getValor(2, 2)) + (getValor(0, 1)
 				* getValor(1, 2) * getValor(2, 0))
