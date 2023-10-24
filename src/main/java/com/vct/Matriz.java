@@ -134,7 +134,7 @@ class Matriz {
 		Matriz matmenor;
 		numL = this.getTamanhoLinha();
 		numC = this.getTamanhoColuna();
-		
+
 		resposta = 0;
 		for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
 			cofator = mat.getValor(0,contC);
@@ -146,6 +146,7 @@ class Matriz {
 		}
 		return (resposta);
 	}
+
 
 	public int determinante(){
 		int ordem,det;
@@ -159,6 +160,8 @@ class Matriz {
 				     break;
 			    case 2:  det = this.detOrdem2(this);;
 				     break;
+				case 3: det = this.detOrdem3(this);
+					break;
 			    default: det = this.detOrdemN(this);;
 				     break;
 			}
@@ -170,7 +173,7 @@ class Matriz {
 
 		return det;
 	}
-
+	/*
 	public int contaZeros() {
 		int maisZeros = 0;
 		int index = 0;
@@ -214,6 +217,21 @@ class Matriz {
 		mt.setValor(2, 1, 3);
 		mt.setValor(2, 2, 0);
 		return mt;
+	}
+	*/
+
+	public int detOrdem3(Matriz mat) {
+
+		return 	(getValor(0, 0) * getValor(1, 1)
+				* getValor(2, 2)) + (getValor(0, 1)
+				* getValor(1, 2) * getValor(2, 0))
+				+ (getValor(1, 0) * getValor(2, 1)
+				* getValor(0, 2))
+				- ((getValor(2 , 2) * getValor(0, 1)
+				* getValor(1, 0)) + (getValor(0, 2)
+				* getValor(1, 1) * getValor(2, 0))
+				+ (getValor(1, 2) * getValor(2, 1)
+				* getValor(0, 0)));
 	}
 
 }
