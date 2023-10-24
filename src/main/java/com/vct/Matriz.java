@@ -5,9 +5,6 @@ import lombok.Setter;
 
 import java.util.Random;
 
-
-@Getter
-@Setter
 class Matriz {
 	private int[][] mat;
 	private int tamLinha;
@@ -51,6 +48,22 @@ class Matriz {
 
 	private void setTamanhoColuna(int novoValor){
 		tamColuna = novoValor;
+	}
+
+	public boolean isLinha() {
+		return linha;
+	}
+
+	public void setLinha(boolean linha) {
+		this.linha = linha;
+	}
+
+	public int getIndexMaisZeros() {
+		return indexMaisZeros;
+	}
+
+	public void setIndexMaisZeros(int indexMaisZeros) {
+		this.indexMaisZeros = indexMaisZeros;
 	}
 
 	public void imprime(){
