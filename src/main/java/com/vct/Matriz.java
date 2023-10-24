@@ -171,9 +171,49 @@ class Matriz {
 		return det;
 	}
 
-	public void contaZeros() {
-
+	public int contaZeros() {
+		int maisZeros = 0;
+		int index = 0;
+		int count;
+		for(int i = 0; i < this.getTamanhoLinha(); i++) {
+			count = 0;
+			for(int j = 0; j < this.getTamanhoColuna(); j++) {
+				if (this.getValor(i, j) == 0) {
+					count++;
+				}
+			}
+			if(count > maisZeros) {
+				maisZeros = count;
+				index = i;
+			}
+		}
+		for(int i = 0; i < this.getTamanhoLinha(); i++) {
+			count = 0;
+			for(int j = 0; j < this.getTamanhoColuna(); j++) {
+				if (this.getValor(j, i) == 0) {
+					count++;
+				}
+			}
+			if(count > maisZeros) {
+				maisZeros = count;
+				index = i;
+			}
+		}
+		return index;
 	}
 
+	public static Matriz meuInicializa() {
+		Matriz mt = new Matriz(3, 3);
+		mt.setValor(0 , 0 , 1);
+		mt.setValor(0, 1, 2);
+		mt.setValor(0, 2, 1);
+		mt.setValor(1 , 0 , 0);
+		mt.setValor(1, 1, 1);
+		mt.setValor(1, 2, 0);
+		mt.setValor(2 , 0 , 4);
+		mt.setValor(2, 1, 3);
+		mt.setValor(2, 2, 0);
+		return mt;
+	}
 
 }
