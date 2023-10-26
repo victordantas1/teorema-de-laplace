@@ -1,11 +1,8 @@
-package com.vct;
-
-import lombok.Getter;
-import lombok.Setter;
+package com.vct.entities;
 
 import java.util.Random;
 
-class Matriz {
+public class Matriz implements MetodosMatriz {
 	private int[][] mat;
 	private int tamLinha;
 	private int tamColuna;
@@ -14,13 +11,13 @@ class Matriz {
 	private int qtdZeros;
 	private boolean proporcional;
 
-	Matriz(){
+	public Matriz(){
 		mat = new int[6][6];
 		this.setTamanhoLinha(6);	
 		this.setTamanhoColuna(6);
 	}
 
-	Matriz(int numLinhas, int numColunas){
+	public Matriz(int numLinhas, int numColunas){
 		mat = new int[numLinhas][numColunas];
 		this.setTamanhoLinha(numLinhas);	
 		this.setTamanhoColuna(numColunas);
@@ -177,9 +174,9 @@ class Matriz {
 		if(this.getQtdZeros() == this.getTamanhoLinha()) {
 			resposta = 0;
 		}
-		else if(this.isProporcional()) {
+		/*else if(this.isProporcional()) {
 			resposta = 0;
-		}
+		}*/
 		else {
 			if(this.isLinha()) {
 				for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
@@ -270,23 +267,23 @@ class Matriz {
 
 	public static Matriz meuInicializa() {
 		Matriz mt = new Matriz(5, 5);
-		mt.setValor(0 , 0 , 1);
-		mt.setValor(0, 1, 0);
-		mt.setValor(0, 2, 0);
-		mt.setValor(0, 3, 0);
-		mt.setValor(0, 4, 0);
-		mt.setValor(1, 0, 2);
-		mt.setValor(1 , 1, 0);
-		mt.setValor(1, 2, 3);
-		mt.setValor(1, 3, 1);
-		mt.setValor(1 , 4 , 0);
+		mt.setValor(0 , 0 , 2); // 1 3 5 2 1
+		mt.setValor(0, 1, 2);	// 2 6 10 4 2
+		mt.setValor(0, 2, 4);
+		mt.setValor(0, 3, 4);
+		mt.setValor(0, 4, 2);
+		mt.setValor(1, 0, 3);
+		mt.setValor(1 , 1, 6);
+		mt.setValor(1, 2, 9);
+		mt.setValor(1, 3, 12);
+		mt.setValor(1 , 4 ,5);
 		mt.setValor(2, 0, 5);
-		mt.setValor(2, 1, 4);
+		mt.setValor(2, 1, 10);
 		mt.setValor(2, 2, 6);
 		mt.setValor(2, 3, 1);
 		mt.setValor(2, 4, 2);
 		mt.setValor(3 , 0, 2);
-		mt.setValor(3, 1, 3);
+		mt.setValor(3, 1, 4);
 		mt.setValor(3, 2, 1);
 		mt.setValor(3, 3, 6);
 		mt.setValor(3, 4, 0);
@@ -295,6 +292,21 @@ class Matriz {
 		mt.setValor(4 , 2, 0);
 		mt.setValor(4, 3, 3);
 		mt.setValor(4, 4, 1);
+
+		return mt;
+	}
+
+	public static Matriz meuInicializa3por3() {
+		Matriz mt = new Matriz(3, 3);
+		mt.setValor(0 , 0 , 2); // 1 3 5 2 1
+		mt.setValor(0, 1, 2);	// 2 6 10 4 2
+		mt.setValor(0, 2, 3);
+		mt.setValor(1, 0, 4);
+		mt.setValor(1, 1, 1);
+		mt.setValor(1, 2, 6);
+		mt.setValor(2 , 0, 4);
+		mt.setValor(2, 1, 2);
+		mt.setValor(2, 2, 1);
 
 		return mt;
 	}
@@ -315,26 +327,45 @@ class Matriz {
 
 
 	public void encontraProporcional() {
-		int i, j, countL, countC;
+		int i, j, countL, countC, countIgualLinha, countIgualColuna, a;
 		boolean aux = false;
+		float[] vetLinha = new float[this.getTamanhoLinha()];
+		float[] vetColuna = new float[this.getTamanhoLinha()];
 		for(i = 0; i < this.getTamanhoLinha(); i++){
 			countL = 0;
 			countC = 0;
+			countIgualLinha = 0;
+			countIgualColuna = 0;
 			for(j = 0; j < this.getTamanhoColuna(); j++){
-				int a = i + 1;
+				countIgualLinha = 0;
+				countIgualColuna = 0;
+				a = i + 1;
 				if(!(a > this.getTamanhoLinha() - 1)) {
 					if(this.getValor(i, j) == this.getValor(a, j)) countL++;
 					if(this.getValor(j, i) == this.getValor(j, a)) countC++;
+					if(!(this.getValor(i, j) == 0 || this.getValor(j, i) == 0)) {
+						vetLinha[j] = Math.abs(this.getValor(a, j) / this.getValor(i, j));
+						vetColuna[j] = Math.abs(this.getValor(j, a) / this.getValor(j, i));
+					}
 				}
 			}
-			if(countL == this.getTamanhoLinha() || countC == this.getTamanhoColuna()) {
+			for(int m = 0; m < vetLinha.length - 1; m++) {
+				a = m + 1;
+				if(!(a > this.getTamanhoLinha() - 1)) {
+					if(vetLinha[m] == vetLinha[a]) {
+						countIgualLinha++;
+					}
+					if(vetColuna[m] == vetColuna[a]) {
+						countIgualColuna++;
+					}
+				}
+			}
+			if(countL == this.getTamanhoLinha() || countC == this.getTamanhoColuna()
+				|| countIgualLinha == this.getTamanhoLinha() - 1 || countIgualColuna == this.getTamanhoColuna() - 1) {
 				aux = true;
 			}
 		}
 		this.setProporcional(aux);
 	}
-
-
-
 
 }

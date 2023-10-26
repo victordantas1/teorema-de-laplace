@@ -1,32 +1,33 @@
-package com.vct;
+package com.vct.entities;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import com.vct.Matriz;
 
 @ExtendWith(MockitoExtension.class)
-public class TestDet {
+public class MatrizTest {
 
     @Test
     void testaDet() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
         mt.encontraProporcional();
-        Assertions.assertEquals(0, mt.determinante());
+        Assertions.assertEquals(-614, mt.determinante());
     }
 
     @Test
     void testaProporcional() {
-        Matriz mt = Matriz.meuInicializa();
-        Assertions.assertTrue(mt.encontraProporcional());
+        Matriz mt = Matriz.meuInicializa3por3();
+        mt.encontraProporcional();
+        Assertions.assertTrue(mt.isProporcional());
     }
 
     @Test
     void testaContaZeros() {
         Matriz mt = Matriz.meuInicializa();
-        Assertions.assertEquals(3, mt.contaZeros());
+        mt.contaZeros();
+        Assertions.assertEquals(3, mt.getQtdZeros());
     }
 
     @Test
