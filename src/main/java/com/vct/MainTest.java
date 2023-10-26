@@ -3,8 +3,19 @@ package com.vct;
 public class MainTest {
 
     public static void main(String[] args){
+        long inicio, fim, resultado;
+        int det;
         Matriz mt = Matriz.meuInicializa();
+        mt.imprime();
         mt.contaZeros();
+        mt.encontraProporcional();
+
+        inicio = System.nanoTime();
+        det = mt.determinante();
+        fim = System.nanoTime();
+        resultado = fim - inicio;
+        System.out.println(det);
+        System.out.println(resultado);
     }
 
 }

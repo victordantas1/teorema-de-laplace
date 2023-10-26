@@ -13,7 +13,8 @@ public class TestDet {
     void testaDet() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
-        Assertions.assertEquals(46, mt.determinante());
+        mt.encontraProporcional();
+        Assertions.assertEquals(0, mt.determinante());
     }
 
     @Test

@@ -12,6 +12,7 @@ class Matriz {
 	private boolean linha;
 	private int indexMaisZeros;
 	private int qtdZeros;
+	private boolean proporcional;
 
 	Matriz(){
 		mat = new int[6][6];
@@ -71,6 +72,14 @@ class Matriz {
 
 	public void setQtdZeros(int qtdZeros) {
 		this.qtdZeros = qtdZeros;
+	}
+
+	public boolean isProporcional() {
+		return proporcional;
+	}
+
+	public void setProporcional(boolean proporcional) {
+		this.proporcional = proporcional;
 	}
 
 	public void imprime(){
@@ -165,10 +174,10 @@ class Matriz {
 		numC = this.getTamanhoColuna();
 
 		resposta = 0;
-		if(this.contaZeros() == this.getTamanhoLinha()) {
+		if(this.getQtdZeros() == this.getTamanhoLinha()) {
 			resposta = 0;
 		}
-		else if(this.encontraProporcional()) {
+		else if(this.isProporcional()) {
 			resposta = 0;
 		}
 		else {
@@ -233,7 +242,7 @@ class Matriz {
 		return det;
 	}
 
-	public int contaZeros() {
+	public void contaZeros() {
 		int maisZeros = 0;
 		int index = 0;
 		int countC, countL, i, j;
@@ -256,20 +265,36 @@ class Matriz {
 			}
 		}
 		this.setIndexMaisZeros(index);
-		return maisZeros;
+		this.setQtdZeros(maisZeros);
 	}
 
 	public static Matriz meuInicializa() {
-		Matriz mt = new Matriz(3, 3);
-		mt.setValor(0 , 0 , 0);
+		Matriz mt = new Matriz(5, 5);
+		mt.setValor(0 , 0 , 1);
 		mt.setValor(0, 1, 0);
-		mt.setValor(0, 2, 1);
-		mt.setValor(1, 0, 0);
-		mt.setValor(1, 1, 1);
-		mt.setValor(1, 2, 2);
-		mt.setValor(2 , 0, 0);
-		mt.setValor(2, 1, 3);
-		mt.setValor(2, 2, 1);
+		mt.setValor(0, 2, 0);
+		mt.setValor(0, 3, 0);
+		mt.setValor(0, 4, 0);
+		mt.setValor(1, 0, 2);
+		mt.setValor(1 , 1, 0);
+		mt.setValor(1, 2, 3);
+		mt.setValor(1, 3, 1);
+		mt.setValor(1 , 4 , 0);
+		mt.setValor(2, 0, 5);
+		mt.setValor(2, 1, 4);
+		mt.setValor(2, 2, 6);
+		mt.setValor(2, 3, 1);
+		mt.setValor(2, 4, 2);
+		mt.setValor(3 , 0, 2);
+		mt.setValor(3, 1, 3);
+		mt.setValor(3, 2, 1);
+		mt.setValor(3, 3, 6);
+		mt.setValor(3, 4, 0);
+		mt.setValor(4,0 , 1);
+		mt.setValor(4, 1, 2);
+		mt.setValor(4 , 2, 0);
+		mt.setValor(4, 3, 3);
+		mt.setValor(4, 4, 1);
 
 		return mt;
 	}
@@ -289,7 +314,7 @@ class Matriz {
 	}
 
 
-	public boolean encontraProporcional() {
+	public void encontraProporcional() {
 		int i, j, countL, countC;
 		boolean aux = false;
 		for(i = 0; i < this.getTamanhoLinha(); i++){
@@ -306,7 +331,7 @@ class Matriz {
 				aux = true;
 			}
 		}
-		return aux;
+		this.setProporcional(aux);
 	}
 
 
