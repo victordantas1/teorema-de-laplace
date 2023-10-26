@@ -13,7 +13,7 @@ public class TestDet {
     void testaMaisZeros() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
-        Assertions.assertEquals(0, mt.getIndexMaisZeros());
+        Assertions.assertEquals(-234, mt.determinante());
     }
 
 }

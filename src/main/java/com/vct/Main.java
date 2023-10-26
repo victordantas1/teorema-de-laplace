@@ -9,9 +9,10 @@ public class Main {
 		long mediaTemp = 0;
 
 		for(int i = 0; i < 3; i++) {
-			mat1 = new Matriz(5,5);
+			mat1 = new Matriz(7,7);
 			mat1.inicializaRandomico();
 			mat1.imprime();
+			mat1.contaZeros();
 
 			inicio = System.nanoTime();
 			det = mat1.determinante();

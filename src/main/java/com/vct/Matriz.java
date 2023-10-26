@@ -24,8 +24,6 @@ class Matriz {
 		this.setTamanhoColuna(numColunas);
 	}
 
-
-
 	public int getValor(int indiceI,int indiceJ){
 		return mat[indiceI][indiceJ];
 	}	
@@ -152,7 +150,7 @@ class Matriz {
 	}
 
 	private int detOrdemN(Matriz mat){
-		int sinal, cofator, detTemp, resposta, contC, numL, numC;
+		int sinal, cofator, detTemp, resposta, contC, contL, numL, numC;
 		Matriz matmenor;
 		numL = this.getTamanhoLinha();
 		numC = this.getTamanhoColuna();
@@ -160,22 +158,33 @@ class Matriz {
 		resposta = 0;
 		if(this.isLinha()) {
 			for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
-				cofator = mat.getValor(this.getIndexMaisZeros(),contC);
+				cofator = mat.getValor(this.getIndexMaisZeros(), contC);
+				if(cofator == 0) {
+					resposta += cofator;
+				}
+				else {
 				sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
 				matmenor = new Matriz(numL-1,numC-1);
 				this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
 				detTemp = matmenor.determinante();
 				resposta = resposta + (cofator * sinal * detTemp);
+				}
 			}
+
 		}
 		else {
-			for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
-				cofator = mat.getValor(this.getIndexMaisZeros(),contC);
-				sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
-				matmenor = new Matriz(numL-1,numC-1);
-				this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
-				detTemp = matmenor.determinante();
-				resposta = resposta + (cofator * sinal * detTemp);
+			for(contL = 0; contL < mat.getTamanhoColuna(); contL++){
+				cofator = mat.getValor(contL, this.getIndexMaisZeros());
+				if(cofator == 0) {
+					resposta += cofator;
+				}
+				else {
+					sinal = this.calculaSinal(contL, this.getIndexMaisZeros());
+					matmenor = new Matriz(numL-1,numC-1);
+					this.copiaMatrizMaiorParaMenor(mat,matmenor,contL,this.getIndexMaisZeros());
+					detTemp = matmenor.determinante();
+					resposta = resposta + (cofator * sinal * detTemp);
+				}
 			}
 		}
 		return (resposta);
@@ -230,19 +239,37 @@ class Matriz {
 				}
 			}
 		}
+		this.setIndexMaisZeros(index);
 	}
 
 	public static Matriz meuInicializa() {
-		Matriz mt = new Matriz(3, 3);
-		mt.setValor(0 , 0 , 0);
-		mt.setValor(0, 1, 0);
-		mt.setValor(0, 2, 0);
-		mt.setValor(1 , 0 , 0);
-		mt.setValor(1, 1, 1);
-		mt.setValor(1, 2, 0);
-		mt.setValor(2 , 0 , 4);
-		mt.setValor(2, 1, 3);
-		mt.setValor(2, 2, 0);
+		Matriz mt = new Matriz(5, 5);
+		mt.setValor(0 , 0 , 2);
+		mt.setValor(0, 1, 1);
+		mt.setValor(0, 2, 3);
+		mt.setValor(0, 3, 0);
+		mt.setValor(0, 4, 1);
+		mt.setValor(1, 0, 2);
+		mt.setValor(1 , 1, 4);
+		mt.setValor(1, 2, 3);
+		mt.setValor(1, 3, 0);
+		mt.setValor(1 , 4, 0);
+		mt.setValor(2, 0, 1);
+		mt.setValor(2, 1, 0);
+		mt.setValor(2 , 2, 0);
+		mt.setValor(2, 3, 1);
+		mt.setValor(2, 4, 2);
+		mt.setValor(3 , 0 , 4);
+		mt.setValor(3, 1, 3);
+		mt.setValor(3, 2, 0);
+		mt.setValor(3, 3, 1);
+		mt.setValor(3 , 4 , 0);
+		mt.setValor(4, 0, 1);
+		mt.setValor(4, 1, 2);
+		mt.setValor(4 , 2 , 4);
+		mt.setValor(4, 3, 3);
+		mt.setValor(4, 4, 0);
+
 		return mt;
 	}
 
