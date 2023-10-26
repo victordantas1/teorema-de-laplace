@@ -10,10 +10,34 @@ import com.vct.Matriz;
 public class TestDet {
 
     @Test
-    void testaMaisZeros() {
+    void testaDet() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
-        Assertions.assertEquals(-234, mt.determinante());
+        Assertions.assertEquals(46, mt.determinante());
+    }
+
+    @Test
+    void testaProporcional() {
+        Matriz mt = Matriz.meuInicializa();
+        Assertions.assertTrue(mt.encontraProporcional());
+    }
+
+    @Test
+    void testaContaZeros() {
+        Matriz mt = Matriz.meuInicializa();
+        Assertions.assertEquals(3, mt.contaZeros());
+    }
+
+    @Test
+    void testaLinhaOuColuna() {
+        Matriz mt = Matriz.meuInicializa();
+        Assertions.assertEquals(false, mt.isLinha());
+    }
+
+    @Test
+    void testaIndexMaisZeros() {
+        Matriz mt = Matriz.meuInicializa();
+        Assertions.assertEquals(0, mt.getIndexMaisZeros());
     }
 
 }

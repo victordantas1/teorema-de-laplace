@@ -11,6 +11,7 @@ class Matriz {
 	private int tamColuna;
 	private boolean linha;
 	private int indexMaisZeros;
+	private int qtdZeros;
 
 	Matriz(){
 		mat = new int[6][6];
@@ -62,6 +63,14 @@ class Matriz {
 
 	public void setIndexMaisZeros(int indexMaisZeros) {
 		this.indexMaisZeros = indexMaisZeros;
+	}
+
+	public int getQtdZeros() {
+		return qtdZeros;
+	}
+
+	public void setQtdZeros(int qtdZeros) {
+		this.qtdZeros = qtdZeros;
 	}
 
 	public void imprime(){
@@ -156,34 +165,41 @@ class Matriz {
 		numC = this.getTamanhoColuna();
 
 		resposta = 0;
-		if(this.isLinha()) {
-			for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
-				cofator = mat.getValor(this.getIndexMaisZeros(), contC);
-				if(cofator == 0) {
-					resposta += cofator;
-				}
-				else {
-				sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
-				matmenor = new Matriz(numL-1,numC-1);
-				this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
-				detTemp = matmenor.determinante();
-				resposta = resposta + (cofator * sinal * detTemp);
-				}
-			}
-
+		if(this.contaZeros() == this.getTamanhoLinha()) {
+			resposta = 0;
+		}
+		else if(this.encontraProporcional()) {
+			resposta = 0;
 		}
 		else {
-			for(contL = 0; contL < mat.getTamanhoColuna(); contL++){
-				cofator = mat.getValor(contL, this.getIndexMaisZeros());
-				if(cofator == 0) {
-					resposta += cofator;
-				}
-				else {
-					sinal = this.calculaSinal(contL, this.getIndexMaisZeros());
+			if(this.isLinha()) {
+				for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
+					cofator = mat.getValor(this.getIndexMaisZeros(), contC);
+					if(cofator == 0) {
+						resposta += cofator;
+					}
+					else {
+					sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
 					matmenor = new Matriz(numL-1,numC-1);
-					this.copiaMatrizMaiorParaMenor(mat,matmenor,contL,this.getIndexMaisZeros());
+					this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
 					detTemp = matmenor.determinante();
 					resposta = resposta + (cofator * sinal * detTemp);
+					}
+				}
+			}
+			else {
+				for(contL = 0; contL < mat.getTamanhoColuna(); contL++){
+					cofator = mat.getValor(contL, this.getIndexMaisZeros());
+					if(cofator == 0) {
+						resposta += cofator;
+					}
+					else {
+						sinal = this.calculaSinal(contL, this.getIndexMaisZeros());
+						matmenor = new Matriz(numL-1,numC-1);
+						this.copiaMatrizMaiorParaMenor(mat,matmenor,contL,this.getIndexMaisZeros());
+						detTemp = matmenor.determinante();
+						resposta = resposta + (cofator * sinal * detTemp);
+					}
 				}
 			}
 		}
@@ -217,7 +233,7 @@ class Matriz {
 		return det;
 	}
 
-	public void contaZeros() {
+	public int contaZeros() {
 		int maisZeros = 0;
 		int index = 0;
 		int countC, countL, i, j;
@@ -240,35 +256,20 @@ class Matriz {
 			}
 		}
 		this.setIndexMaisZeros(index);
+		return maisZeros;
 	}
 
 	public static Matriz meuInicializa() {
-		Matriz mt = new Matriz(5, 5);
-		mt.setValor(0 , 0 , 2);
-		mt.setValor(0, 1, 1);
-		mt.setValor(0, 2, 3);
-		mt.setValor(0, 3, 0);
-		mt.setValor(0, 4, 1);
-		mt.setValor(1, 0, 2);
-		mt.setValor(1 , 1, 4);
-		mt.setValor(1, 2, 3);
-		mt.setValor(1, 3, 0);
-		mt.setValor(1 , 4, 0);
-		mt.setValor(2, 0, 1);
-		mt.setValor(2, 1, 0);
-		mt.setValor(2 , 2, 0);
-		mt.setValor(2, 3, 1);
-		mt.setValor(2, 4, 2);
-		mt.setValor(3 , 0 , 4);
-		mt.setValor(3, 1, 3);
-		mt.setValor(3, 2, 0);
-		mt.setValor(3, 3, 1);
-		mt.setValor(3 , 4 , 0);
-		mt.setValor(4, 0, 1);
-		mt.setValor(4, 1, 2);
-		mt.setValor(4 , 2 , 4);
-		mt.setValor(4, 3, 3);
-		mt.setValor(4, 4, 0);
+		Matriz mt = new Matriz(3, 3);
+		mt.setValor(0 , 0 , 0);
+		mt.setValor(0, 1, 0);
+		mt.setValor(0, 2, 1);
+		mt.setValor(1, 0, 0);
+		mt.setValor(1, 1, 1);
+		mt.setValor(1, 2, 2);
+		mt.setValor(2 , 0, 0);
+		mt.setValor(2, 1, 3);
+		mt.setValor(2, 2, 1);
 
 		return mt;
 	}
@@ -286,5 +287,29 @@ class Matriz {
 				+ (getValor(1, 2) * getValor(2, 1)
 				* getValor(0, 0)));
 	}
+
+
+	public boolean encontraProporcional() {
+		int i, j, countL, countC;
+		boolean aux = false;
+		for(i = 0; i < this.getTamanhoLinha(); i++){
+			countL = 0;
+			countC = 0;
+			for(j = 0; j < this.getTamanhoColuna(); j++){
+				int a = i + 1;
+				if(!(a > this.getTamanhoLinha() - 1)) {
+					if(this.getValor(i, j) == this.getValor(a, j)) countL++;
+					if(this.getValor(j, i) == this.getValor(j, a)) countC++;
+				}
+			}
+			if(countL == this.getTamanhoLinha() || countC == this.getTamanhoColuna()) {
+				aux = true;
+			}
+		}
+		return aux;
+	}
+
+
+
 
 }
