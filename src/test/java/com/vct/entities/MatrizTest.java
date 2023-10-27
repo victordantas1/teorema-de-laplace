@@ -17,20 +17,6 @@ public class MatrizTest {
     }
 
     @Test
-    void testaProporcionalLinha() {
-        Matriz mt = Matriz.meuInicializa3por3();
-        mt.encontraProp();
-        Assertions.assertTrue(mt.isProp());
-    }
-
-    @Test
-    void testaProporcionalColuna() {
-        Matriz mt = Matriz.meuInicializa3por3();
-        mt.encontraProp();
-        Assertions.assertTrue(mt.isProp());
-    }
-
-    @Test
     void testaContaZeros() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
@@ -47,6 +33,20 @@ public class MatrizTest {
     void testaIndexMaisZeros() {
         Matriz mt = Matriz.meuInicializa();
         Assertions.assertEquals(0, mt.getIndexMaisZeros());
+    }
+
+    @Test
+    void testaSePropEhTrue() {
+        Matriz mt = Matriz.meuInicializa3por3();
+        mt.encontraProp();
+        Assertions.assertTrue(mt.isProp());
+    }
+
+    @Test
+    void testaSePropEhFalse() {
+        Matriz mt = Matriz.meuInicializa3por3();
+        mt.encontraProp();
+        Assertions.assertFalse(mt.isProp());
     }
 
 }

@@ -298,15 +298,15 @@ public class Matriz implements MetodosMatriz {
 
 	public static Matriz meuInicializa3por3() {
 		Matriz mt = new Matriz(3, 3);
-		mt.setValor(0 , 0 , 2); // 1 3 5 2 1
-		mt.setValor(0, 1, 4);	// 2 6 10 4 2
-		mt.setValor(0, 2, 2);
-		mt.setValor(1, 0, 1);
+		mt.setValor(0 , 0 , 4); // 1 3 5 2 1
+		mt.setValor(0, 1, 6);	// 2 6 10 4 2
+		mt.setValor(0, 2, 8);
+		mt.setValor(1, 0, 2);
 		mt.setValor(1, 1, 6);
-		mt.setValor(1, 2, 1);
-		mt.setValor(2 , 0, 2);
-		mt.setValor(2, 1, 4);
-		mt.setValor(2, 2, 2);
+		mt.setValor(1, 2, 4);
+		mt.setValor(2 , 0, 4);
+		mt.setValor(2, 1, 6);
+		mt.setValor(2, 2, 8);
 
 		return mt;
 	}
@@ -370,13 +370,15 @@ public class Matriz implements MetodosMatriz {
 	*/
 
 	public void encontraProp() {
-		boolean prop = false;
+		boolean prop, linhaProp, colunaProp;
+		prop = false;
 		Vetor vetLinha = new Vetor(this.getTamanhoLinha());
 		Vetor vetColuna = new Vetor(this.getTamanhoColuna());
 		int cont = 0;
 		while(cont < this.getTamanhoLinha() && prop == false) {
-				vetColuna.insereMatrizNoVetColuna(this, cont);
-				if(vetLinha.comparaValoresLinhaV2(this, cont) || vetColuna.comparaValoresColunaV2(this, cont)){
+			linhaProp = vetLinha.comparaValoresLinhaV2(this, cont);
+			colunaProp = vetColuna.comparaValoresColunaV2(this, cont);
+				if(linhaProp || colunaProp){
 					prop = true;
 				}
 				cont++;

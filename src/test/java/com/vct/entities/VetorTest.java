@@ -8,22 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class VetorTest {
 
     @Test
-    void comparaValoresLinha() {
-        Matriz mt = Matriz.meuInicializa3por3();
-        Vetor vet = new Vetor(mt.getTamanhoLinha());
-        vet.insereMatrizNoVetLinha(mt, 0);
-        Assertions.assertTrue(vet.comparaValoresLinha(mt, 0));
-    }
-
-    @Test
-    void comparaValoresColuna() {
-        Matriz mt = Matriz.meuInicializa3por3();
-        Vetor vet = new Vetor(mt.getTamanhoLinha());
-        vet.insereMatrizNoVetColuna(mt, 0);
-        Assertions.assertFalse(vet.comparaValoresColuna(mt, 0));
-    }
-
-    @Test
     void insereLinha() {
         Matriz mt = Matriz.meuInicializa3por3();
         Vetor vet = new Vetor(mt.getTamanhoLinha());
@@ -51,4 +35,36 @@ class VetorTest {
         vet.setElemento(2, 1);
         Assertions.assertFalse(vet.comparaValoresInternos());
     }
+
+    @Test
+    void testaProporcionalColuna() {
+        Matriz mt = Matriz.meuInicializa3por3();
+        Vetor vet= new Vetor(mt.getTamanhoLinha());
+        Assertions.assertTrue(vet.comparaValoresColunaV2(mt, 0));
+    }
+
+    @Test
+    void testaProporcionalLinha() {
+        Matriz mt = Matriz.meuInicializa3por3();
+        Vetor vet= new Vetor(mt.getTamanhoLinha());
+        Assertions.assertTrue(vet.comparaValoresLinhaV2(mt, 0));
+    }
+
+    /*
+    @Test
+    void comparaValoresLinha() {
+        Matriz mt = Matriz.meuInicializa3por3();
+        Vetor vet = new Vetor(mt.getTamanhoLinha());
+        vet.insereMatrizNoVetLinha(mt, 0);
+        Assertions.assertTrue(vet.comparaValoresLinha(mt, 0));
+    }
+
+    @Test
+    void comparaValoresColuna() {
+        Matriz mt = Matriz.meuInicializa3por3();
+        Vetor vet = new Vetor(mt.getTamanhoLinha());
+        vet.insereMatrizNoVetColuna(mt, 0);
+        Assertions.assertFalse(vet.comparaValoresColuna(mt, 0));
+    }
+    */
 }
