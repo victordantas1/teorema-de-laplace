@@ -11,7 +11,7 @@ public class Main {
 		long mediaTemp = 0;
 
 		for(int i = 0; i < 3; i++) {
-			mat1 = new Matriz(3,3);
+			mat1 = new Matriz(7,7);
 			mat1.inicializaRandomico();
 			mat1.imprime();
 			mat1.contaZeros();

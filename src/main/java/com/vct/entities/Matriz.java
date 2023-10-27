@@ -250,12 +250,13 @@ public class Matriz implements MetodosMatriz {
 			for(j = 0; j < this.getTamanhoColuna(); j++) {
 				if(this.getValor(i, j) == 0) countL++;
 				if(this.getValor(j, i) == 0) countC++;
+				if(countC > maisZeros) {
+					maisZeros = countC;
+					index = j;
+					this.setLinha(false);
+				}
 			}
-			if(countC > maisZeros) {
-				maisZeros = countC;
-				index = j;
-				this.setLinha(false);
-			} else if (countL > maisZeros){
+			if (countL > maisZeros){
 				maisZeros = countL;
 				index = i;
 				this.setLinha(true);
