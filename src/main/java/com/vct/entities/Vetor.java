@@ -21,33 +21,89 @@ public class Vetor implements MetodosVetor{
 
     @Override
     public boolean comparaValoresLinha(Matriz mat, int index) {
-        boolean iguais = true;
+        boolean iguais;
+        boolean prop = false;
         for(int i = 0; i < mat.getTamanhoLinha(); i++) {
-            for(int j = 0; j < mat.getTamanhoColuna(); j++) {
-               if(i != index) {
-                   if(this.getElemento(j) != mat.getValor(i, j)) {
-                       iguais = false;
-                   }
-               }
+            iguais = true;
+            if(i != index) {
+                for(int j = 0; j < mat.getTamanhoColuna() && iguais == true; j++) {
+                    if(this.getElemento(j) != mat.getValor(i, j)) {
+                        iguais = false;
+                    }
+                }
+                if(iguais) prop = true;
             }
         }
-        return iguais;
+        return prop;
     }
 
     @Override
     public boolean comparaValoresColuna(Matriz mat, int index) {
-        boolean iguais = true;
+        boolean iguais;
+        boolean prop = false;
         for(int i = 0; i < mat.getTamanhoLinha(); i++) {
-            for(int j = 0; j < mat.getTamanhoColuna(); j++) {
-                if(i != index) {
+            iguais = true;
+            if(i != index) {
+                for(int j = 0; j < mat.getTamanhoColuna() && iguais == true; j++) {
                     if(this.getElemento(j) != mat.getValor(j, i)) {
                         iguais = false;
                     }
                 }
+                if(iguais) prop = true;
             }
         }
-        return iguais;
+        return prop;
     }
 
+    @Override
+    public void insereMatrizNoVetLinha(Matriz mat, int index) {
+        for(int i = 0; i < mat.getTamanhoLinha(); i++) {
+            this.setElemento(i, mat.getValor(index, i));
+        }
+    }
+
+    @Override
+    public void insereMatrizNoVetColuna(Matriz mat, int index) {
+        for(int i = 0; i < mat.getTamanhoLinha(); i++) {
+            this.setElemento(i, mat.getValor(i, index));
+        }
+    }
+
+    @Override
+    public boolean comparaValoresInternos() {
+        boolean igual = true;
+        int count = 0;
+        while(count < this.getTamanho() - 1) {
+            if(this.getElemento(count) != this.getElemento(count + 1)) {
+                igual = false;
+            }
+            count++;
+        }
+        return igual;
+    }
+
+
+    public boolean comparaValoresLinhaV2(Matriz mat, int index) {
+        boolean iguais;
+        boolean prop = false;
+        this.insereMatrizNoVetLinha(mat, index);
+        Vetor vetDivisores = new Vetor(mat.getTamanhoLinha());
+        for(int i = 0; i < mat.getTamanhoLinha(); i++) {
+            iguais = true;
+            if(i != index) {
+                for(int j = 0; j < mat.getTamanhoColuna() && iguais == true; j++) {
+                    if(this.getElemento(j) != mat.getValor(i, j)) {
+                        iguais = false;
+                    }
+                    vetDivisores.setElemento(j, mat.getValor(i + 1, j) / mat.getValor(i, j));
+                    if(vetDivisores.comparaValoresInternos()) {
+                       iguais = true;
+                    }
+                }
+                if(iguais) prop = true;
+            }
+        }
+        return prop;
+    }
 
 }

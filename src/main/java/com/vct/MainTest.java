@@ -10,7 +10,7 @@ public class MainTest {
         Matriz mt = Matriz.meuInicializa();
         mt.imprime();
         mt.contaZeros();
-        mt.encontraProporcional();
+        mt.encontraProp();
 
         inicio = System.nanoTime();
         det = mt.determinante();

@@ -12,15 +12,15 @@ public class MatrizTest {
     void testaDet() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
-        mt.encontraProporcional();
+        mt.encontraProp();
         Assertions.assertEquals(-614, mt.determinante());
     }
 
     @Test
     void testaProporcional() {
         Matriz mt = Matriz.meuInicializa3por3();
-        mt.encontraProporcional();
-        Assertions.assertTrue(mt.isProporcional());
+        mt.encontraProp();
+        Assertions.assertTrue(mt.isProp());
     }
 
     @Test

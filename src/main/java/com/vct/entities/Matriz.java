@@ -9,7 +9,7 @@ public class Matriz implements MetodosMatriz {
 	private boolean linha;
 	private int indexMaisZeros;
 	private int qtdZeros;
-	private boolean proporcional;
+	private boolean prop;
 
 	public Matriz(){
 		mat = new int[6][6];
@@ -71,12 +71,12 @@ public class Matriz implements MetodosMatriz {
 		this.qtdZeros = qtdZeros;
 	}
 
-	public boolean isProporcional() {
-		return proporcional;
+	public boolean isProp() {
+		return this.prop;
 	}
 
-	public void setProporcional(boolean proporcional) {
-		this.proporcional = proporcional;
+	public void setProp(boolean proporcional) {
+		this.prop = proporcional;
 	}
 
 	public void imprime(){
@@ -174,9 +174,9 @@ public class Matriz implements MetodosMatriz {
 		if(this.getQtdZeros() == this.getTamanhoLinha()) {
 			resposta = 0;
 		}
-		/*else if(this.isProporcional()) {
+		else if(this.isProp()) {
 			resposta = 0;
-		}*/
+		}
 		else {
 			if(this.isLinha()) {
 				for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
@@ -300,11 +300,11 @@ public class Matriz implements MetodosMatriz {
 		Matriz mt = new Matriz(3, 3);
 		mt.setValor(0 , 0 , 2); // 1 3 5 2 1
 		mt.setValor(0, 1, 2);	// 2 6 10 4 2
-		mt.setValor(0, 2, 3);
-		mt.setValor(1, 0, 4);
+		mt.setValor(0, 2, 1);
+		mt.setValor(1, 0, 1);
 		mt.setValor(1, 1, 1);
 		mt.setValor(1, 2, 6);
-		mt.setValor(2 , 0, 4);
+		mt.setValor(2 , 0, 2);
 		mt.setValor(2, 1, 2);
 		mt.setValor(2, 2, 1);
 
@@ -325,15 +325,15 @@ public class Matriz implements MetodosMatriz {
 				* getValor(0, 0)));
 	}
 
-
+	/*
 	public void encontraProporcional() {
 		int i, j, countL, countC, countIgualLinha, countIgualColuna, a;
 		boolean aux = false;
 		float[] vetLinha = new float[this.getTamanhoLinha()];
 		float[] vetColuna = new float[this.getTamanhoLinha()];
 		for(i = 0; i < this.getTamanhoLinha(); i++){
-			countL = 0;
 			countC = 0;
+			countL = 0;
 			countIgualLinha = 0;
 			countIgualColuna = 0;
 			for(j = 0; j < this.getTamanhoColuna(); j++){
@@ -344,8 +344,8 @@ public class Matriz implements MetodosMatriz {
 					if(this.getValor(i, j) == this.getValor(a, j)) countL++;
 					if(this.getValor(j, i) == this.getValor(j, a)) countC++;
 					if(!(this.getValor(i, j) == 0 || this.getValor(j, i) == 0)) {
-						vetLinha[j] = Math.abs(this.getValor(a, j) / this.getValor(i, j));
-						vetColuna[j] = Math.abs(this.getValor(j, a) / this.getValor(j, i));
+						vetLinha[j] = (float) this.getValor(a, j) / this.getValor(i, j);
+						vetColuna[j] = (float) this.getValor(j, a) / this.getValor(j, i);
 					}
 				}
 			}
@@ -365,7 +365,24 @@ public class Matriz implements MetodosMatriz {
 				aux = true;
 			}
 		}
-		this.setProporcional(aux);
+		this.setLinhaProp(aux);
+	}
+	*/
+
+	public void encontraProp() {
+		boolean prop = false;
+		Vetor vetLinha = new Vetor(this.getTamanhoLinha());
+		Vetor vetColuna = new Vetor(this.getTamanhoColuna());
+		int cont = 0;
+		while(cont < this.getTamanhoLinha() && prop == false) {
+				vetLinha.insereMatrizNoVetLinha(this, cont);
+				vetColuna.insereMatrizNoVetColuna(this, cont);
+				if(vetLinha.comparaValoresLinha(this, cont) == true || vetColuna.comparaValoresColuna(this, cont)){
+					prop = true;
+				}
+				cont++;
+		}
+		this.setProp(prop);
 	}
 
 }
