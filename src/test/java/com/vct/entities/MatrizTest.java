@@ -17,7 +17,14 @@ public class MatrizTest {
     }
 
     @Test
-    void testaProporcional() {
+    void testaProporcionalLinha() {
+        Matriz mt = Matriz.meuInicializa3por3();
+        mt.encontraProp();
+        Assertions.assertTrue(mt.isProp());
+    }
+
+    @Test
+    void testaProporcionalColuna() {
         Matriz mt = Matriz.meuInicializa3por3();
         mt.encontraProp();
         Assertions.assertTrue(mt.isProp());
@@ -31,7 +38,7 @@ public class MatrizTest {
     }
 
     @Test
-    void testaLinhaOuColuna() {
+    void testaLinhaOuColunaMaisZeros() {
         Matriz mt = Matriz.meuInicializa();
         Assertions.assertEquals(false, mt.isLinha());
     }

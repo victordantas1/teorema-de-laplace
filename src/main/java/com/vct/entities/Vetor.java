@@ -84,26 +84,58 @@ public class Vetor implements MetodosVetor{
 
 
     public boolean comparaValoresLinhaV2(Matriz mat, int index) {
-        boolean iguais;
-        boolean prop = false;
+        boolean iguais, divisores, prop;
+        int a = 0;
+        prop = false;
         this.insereMatrizNoVetLinha(mat, index);
         Vetor vetDivisores = new Vetor(mat.getTamanhoLinha());
         for(int i = 0; i < mat.getTamanhoLinha(); i++) {
             iguais = true;
+            divisores = true;
+            a = 1 + i;
             if(i != index) {
                 for(int j = 0; j < mat.getTamanhoColuna() && iguais == true; j++) {
+                    if((a > mat.getTamanhoLinha())) {
+                        vetDivisores.setElemento(j, mat.getValor(a, j) / mat.getValor(i, j));
+                        if(!vetDivisores.comparaValoresInternos()) {
+                            divisores = false;
+                        }
+                    }
                     if(this.getElemento(j) != mat.getValor(i, j)) {
                         iguais = false;
                     }
-                    vetDivisores.setElemento(j, mat.getValor(i + 1, j) / mat.getValor(i, j));
-                    if(vetDivisores.comparaValoresInternos()) {
-                       iguais = true;
-                    }
                 }
-                if(iguais) prop = true;
+                if(iguais || divisores) prop = true;
             }
         }
         return prop;
     }
 
+    public boolean comparaValoresColunaV2(Matriz mat, int index) {
+        boolean iguais, divisores, prop;
+        int a = 0;
+        prop = false;
+        this.insereMatrizNoVetLinha(mat, index);
+        Vetor vetDivisores = new Vetor(mat.getTamanhoLinha());
+        for(int i = 0; i < mat.getTamanhoLinha(); i++) {
+            iguais = true;
+            divisores = true;
+            a = 1 + i;
+            if(i != index) {
+                for(int j = 0; j < mat.getTamanhoColuna() && iguais == true; j++) {
+                    if((a > mat.getTamanhoColuna())) {
+                        vetDivisores.setElemento(j, mat.getValor(j, a) / mat.getValor(j, i));
+                        if(!vetDivisores.comparaValoresInternos()) {
+                            divisores = false;
+                        }
+                    }
+                    if(this.getElemento(j) != mat.getValor(j, i)) {
+                        iguais = false;
+                    }
+                }
+                if(iguais || divisores) prop = true;
+            }
+        }
+        return prop;
+    }
 }
