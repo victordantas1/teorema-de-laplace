@@ -8,8 +8,9 @@ public class Matriz implements MetodosMatriz {
 	private int tamColuna;
 	private boolean linha;
 	private int indexMaisZeros;
-	private int qtdZeros;
+	private int qtdZerosLinhaOuColuna;
 	private boolean prop;
+    private boolean elementoLinOuColIguais;
 
 	public Matriz(){
 		mat = new int[6][6];
@@ -63,12 +64,12 @@ public class Matriz implements MetodosMatriz {
 		this.indexMaisZeros = indexMaisZeros;
 	}
 
-	public int getQtdZeros() {
-		return qtdZeros;
+	public int getQtdZerosLinhaOuColuna() {
+		return qtdZerosLinhaOuColuna;
 	}
 
-	public void setQtdZeros(int qtdZeros) {
-		this.qtdZeros = qtdZeros;
+	public void setQtdZerosLinhaOuColuna(int qtdZeros) {
+		this.qtdZerosLinhaOuColuna = qtdZeros;
 	}
 
 	public boolean isProp() {
@@ -79,7 +80,15 @@ public class Matriz implements MetodosMatriz {
 		this.prop = proporcional;
 	}
 
-	public void imprime(){
+    public boolean isElementoLinOuColIguais() {
+        return elementoLinOuColIguais;
+    }
+
+    public void setElementoLinOuColIguais(boolean elementoLinOuColIguais) {
+        this.elementoLinOuColIguais = elementoLinOuColIguais;
+    }
+
+    public void imprime(){
 		int conti,contj;	
 		for(conti = 0; conti < this.getTamanhoLinha(); conti++){
 			System.out.println();
@@ -171,10 +180,8 @@ public class Matriz implements MetodosMatriz {
 		numC = this.getTamanhoColuna();
 
 		resposta = 0;
-		if(this.getQtdZeros() == this.getTamanhoLinha()) {
-			resposta = 0;
-		}
-		else if(this.isProp()) {
+		if(this.getQtdZerosLinhaOuColuna() == this.getTamanhoLinha() || this.isProp()
+                    || this.isElementoLinOuColIguais()) {
 			resposta = 0;
 		}
 		else {
@@ -225,8 +232,8 @@ public class Matriz implements MetodosMatriz {
 				     break;
 			    case 2:  det = this.detOrdem2(this);;
 				     break;
-				case 3: det = this.detOrdem3(this);
-					break;
+                case 3: det = this.detOrdem3(this);;
+                     break;
 			    default: det = this.detOrdemN(this);;
 				     break;
 			}
@@ -252,24 +259,24 @@ public class Matriz implements MetodosMatriz {
 				if(this.getValor(j, i) == 0) countC++;
 				if(countC > maisZeros) {
 					maisZeros = countC;
-					index = j;
+					index = i;
 					this.setLinha(false);
 				}
-			}
-			if (countL > maisZeros){
-				maisZeros = countL;
-				index = i;
-				this.setLinha(true);
+				else if (countL > maisZeros){
+					maisZeros = countL;
+					index = i;
+					this.setLinha(true);
+				}
 			}
 		}
 		this.setIndexMaisZeros(index);
-		this.setQtdZeros(maisZeros);
+		this.setQtdZerosLinhaOuColuna(maisZeros);
 	}
 
 	public static Matriz meuInicializa() {
 		Matriz mt = new Matriz(5, 5);
-		mt.setValor(0 , 0 , 2); // 1 3 5 2 1
-		mt.setValor(0, 1, 2);	// 2 6 10 4 2
+		mt.setValor(0 , 0 , 2);
+		mt.setValor(0, 1, 2);
 		mt.setValor(0, 2, 4);
 		mt.setValor(0, 3, 4);
 		mt.setValor(0, 4, 2);
@@ -287,12 +294,12 @@ public class Matriz implements MetodosMatriz {
 		mt.setValor(3, 1, 4);
 		mt.setValor(3, 2, 1);
 		mt.setValor(3, 3, 6);
-		mt.setValor(3, 4, 0);
-		mt.setValor(4,0 , 1);
-		mt.setValor(4, 1, 2);
+		mt.setValor(3, 4, 3);
+		mt.setValor(4,0 , 0);
+		mt.setValor(4, 1, 0);
 		mt.setValor(4 , 2, 0);
-		mt.setValor(4, 3, 3);
-		mt.setValor(4, 4, 1);
+		mt.setValor(4, 3, 0);
+		mt.setValor(4, 4, 0);
 
 		return mt;
 	}
@@ -314,17 +321,24 @@ public class Matriz implements MetodosMatriz {
 
 
 	public int detOrdem3(Matriz mat) {
-		return 	(getValor(0, 0) * getValor(1, 1)
-				* getValor(2, 2)) + (getValor(0, 1)
-				* getValor(1, 2) * getValor(2, 0))
-				+ (getValor(1, 0) * getValor(2, 1)
-				* getValor(0, 2))
-				- ((getValor(2 , 2) * getValor(0, 1)
-				* getValor(1, 0)) + (getValor(0, 2)
-				* getValor(1, 1) * getValor(2, 0))
-				+ (getValor(1, 2) * getValor(2, 1)
-				* getValor(0, 0)));
-	}
+        int resultado;
+        if(mat.isProp() || mat.getQtdZerosLinhaOuColuna() == mat.getTamanhoLinha()) {
+            resultado = 0;
+        }
+        else {
+               resultado = (mat.getValor(0, 0) * mat.getValor(1, 1)
+				* mat.getValor(2, 2)) + (mat.getValor(0, 1)
+				* mat.getValor(1, 2) * mat.getValor(2, 0))
+				+ (mat.getValor(1, 0) * mat.getValor(2, 1)
+				* mat.getValor(0, 2))
+				- ((mat.getValor(2 , 2) * mat.getValor(0, 1)
+				* mat.getValor(1, 0)) + (mat.getValor(0, 2)
+				* mat.getValor(1, 1) * mat.getValor(2, 0))
+				+ (mat.getValor(1, 2) * mat.getValor(2, 1)
+				* mat.getValor(0, 0)));
+	    }
+        return resultado;
+    }
 
 	/*
 	public void encontraProporcional() {
@@ -386,5 +400,21 @@ public class Matriz implements MetodosMatriz {
 		}
 		this.setProp(prop);
 	}
+
+    @Override
+    public void econtraElementosIguais() {
+        boolean iguais = false;
+        int count = 0;
+        Vetor vetLinha = new Vetor(this.getTamanhoLinha());
+        Vetor vetColuna = new Vetor(this.getTamanhoColuna());
+        while (count < this.getTamanhoLinha() && iguais == false) {
+            vetLinha.insereMatrizNoVetLinha(this, count);
+            vetColuna.insereMatrizNoVetColuna(this, count);
+            if(vetLinha.comparaValoresInternos() || vetColuna.comparaValoresInternos()) {
+                iguais = true;
+            }
+        }
+        this.setElementoLinOuColIguais(iguais);
+    }
 
 }

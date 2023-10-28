@@ -7,7 +7,7 @@ public class MainTest {
     public static void main(String[] args){
         long inicio, fim, resultado;
         int det;
-        Matriz mt = Matriz.meuInicializa();
+        Matriz mt = Matriz.meuInicializa3por3();
         mt.imprime();
         mt.contaZeros();
         mt.encontraProp();

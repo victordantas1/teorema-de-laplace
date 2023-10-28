@@ -13,31 +13,33 @@ public class MatrizTest {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
         mt.encontraProp();
-        Assertions.assertEquals(-614, mt.determinante());
+        Assertions.assertEquals(0, mt.determinante());
     }
 
     @Test
     void testaContaZeros() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
-        Assertions.assertEquals(3, mt.getQtdZeros());
+        Assertions.assertEquals(0, mt.getQtdZerosLinhaOuColuna());
     }
 
     @Test
     void testaLinhaOuColunaMaisZeros() {
         Matriz mt = Matriz.meuInicializa();
-        Assertions.assertEquals(false, mt.isLinha());
+        mt.contaZeros();
+        Assertions.assertTrue(mt.isLinha());
     }
 
     @Test
     void testaIndexMaisZeros() {
         Matriz mt = Matriz.meuInicializa();
-        Assertions.assertEquals(0, mt.getIndexMaisZeros());
+        mt.contaZeros();
+        Assertions.assertEquals(4, mt.getIndexMaisZeros());
     }
 
     @Test
     void testaSePropEhTrue() {
-        Matriz mt = Matriz.meuInicializa3por3();
+        Matriz mt = Matriz.meuInicializa();
         mt.encontraProp();
         Assertions.assertTrue(mt.isProp());
     }
