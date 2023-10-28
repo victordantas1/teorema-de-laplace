@@ -413,6 +413,7 @@ public class Matriz implements MetodosMatriz {
             if(vetLinha.comparaValoresInternos() || vetColuna.comparaValoresInternos()) {
                 iguais = true;
             }
+			count++;
         }
         this.setElementoLinOuColIguais(iguais);
     }
