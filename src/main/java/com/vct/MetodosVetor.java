@@ -1,4 +1,6 @@
-package com.vct.entities;
+package com.vct;
+
+import com.vct.Matriz;
 
 public interface MetodosVetor {
 
@@ -7,4 +9,6 @@ public interface MetodosVetor {
     void insereMatrizNoVetLinha(Matriz mat, int index);
     void insereMatrizNoVetColuna(Matriz mat, int index);
     boolean comparaValoresInternos();
+
+    void inicializaOrdens();
 }

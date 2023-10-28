@@ -1,9 +1,9 @@
 package com.vct.entities;
 
+import com.vct.Matriz;
+import com.vct.Vetor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class VetorTest {
 

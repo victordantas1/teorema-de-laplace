@@ -1,9 +1,12 @@
-package com.vct.entities;
+package com.vct;
 
-public class Vetor implements MetodosVetor{
+public class Vetor implements MetodosVetor {
 
     private float[] vet;
     private int tamanho;
+
+    public Vetor() {
+    }
 
     public Vetor(int newTamanho) {
         this.setTamanho(newTamanho);
@@ -83,6 +86,8 @@ public class Vetor implements MetodosVetor{
     }
 
 
+
+
     public boolean comparaValoresLinhaV2(Matriz mat, int index) {
         boolean divisores, prop;
         prop = false;
@@ -125,5 +130,17 @@ public class Vetor implements MetodosVetor{
             }
         }
         return prop;
+    }
+
+    @Override
+    public void inicializaOrdens() {
+        this.setTamanho(6);
+        this.vet = new float[this.getTamanho()];
+        this.setElemento(0, 3);
+        this.setElemento(1, 5);
+        this.setElemento(2, 7);
+        this.setElemento(3, 9);
+        this.setElemento(4, 11);
+        this.setElemento(5, 13);
     }
 }

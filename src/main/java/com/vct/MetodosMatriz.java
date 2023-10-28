@@ -1,4 +1,4 @@
-package com.vct.entities;
+package com.vct;
 
 public interface MetodosMatriz {
 

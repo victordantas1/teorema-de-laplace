@@ -1,5 +1,6 @@
 package com.vct.entities;
 
+import com.vct.Matriz;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,35 +21,35 @@ public class MatrizTest {
     void testaContaZeros() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
-        Assertions.assertEquals(0, mt.getQtdZerosLinhaOuColuna());
+        Assertions.assertEquals(4, mt.getQtdZerosLinhaOuColuna());
     }
 
     @Test
     void testaLinhaOuColunaMaisZeros() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
-        Assertions.assertTrue(mt.isLinha());
+        Assertions.assertFalse(mt.getEhLinha());
     }
 
     @Test
     void testaIndexMaisZeros() {
         Matriz mt = Matriz.meuInicializa();
         mt.contaZeros();
-        Assertions.assertEquals(4, mt.getIndexMaisZeros());
+        Assertions.assertEquals(1, mt.getIndexMaisZeros());
     }
 
     @Test
     void testaSePropEhTrue() {
         Matriz mt = Matriz.meuInicializa();
         mt.encontraProp();
-        Assertions.assertTrue(mt.isProp());
+        Assertions.assertTrue(mt.getProp());
     }
 
     @Test
     void testaSePropEhFalse() {
         Matriz mt = Matriz.meuInicializa3por3();
         mt.encontraProp();
-        Assertions.assertFalse(mt.isProp());
+        Assertions.assertFalse(mt.getProp());
     }
 
 }

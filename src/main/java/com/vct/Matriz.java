@@ -1,12 +1,13 @@
-package com.vct.entities;
+package com.vct;
 
 import java.util.Random;
 
 public class Matriz implements MetodosMatriz {
+
 	private int[][] mat;
 	private int tamLinha;
 	private int tamColuna;
-	private boolean linha;
+	private boolean ehLinha;
 	private int indexMaisZeros;
 	private int qtdZerosLinhaOuColuna;
 	private boolean prop;
@@ -48,12 +49,12 @@ public class Matriz implements MetodosMatriz {
 		tamColuna = novoValor;
 	}
 
-	public boolean isLinha() {
-		return linha;
+	public boolean getEhLinha() {
+		return ehLinha;
 	}
 
-	public void setLinha(boolean linha) {
-		this.linha = linha;
+	public void setEhLinha(boolean linha) {
+		this.ehLinha = linha;
 	}
 
 	public int getIndexMaisZeros() {
@@ -72,7 +73,7 @@ public class Matriz implements MetodosMatriz {
 		this.qtdZerosLinhaOuColuna = qtdZeros;
 	}
 
-	public boolean isProp() {
+	public boolean getProp() {
 		return this.prop;
 	}
 
@@ -80,7 +81,7 @@ public class Matriz implements MetodosMatriz {
 		this.prop = proporcional;
 	}
 
-    public boolean isElementoLinOuColIguais() {
+    public boolean getElementoLinOuColIguais() {
         return elementoLinOuColIguais;
     }
 
@@ -174,29 +175,89 @@ public class Matriz implements MetodosMatriz {
 	}
 
 	private int detOrdemN(Matriz mat){
+		int sinal, cofator, detTemp, resposta, contC, numL, numC;
+		Matriz matmenor;
+		numL = this.getTamanhoLinha();
+		numC = this.getTamanhoColuna();
+
+		resposta = 0;
+		for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
+			cofator = mat.getValor(0,contC);
+			sinal = this.calculaSinal(0,contC);
+			matmenor = new Matriz(numL-1,numC-1);
+			this.copiaMatrizMaiorParaMenor(mat,matmenor,0,contC);
+			detTemp = matmenor.determinante();
+			resposta = resposta + (cofator * sinal * detTemp);
+		}
+		return (resposta);
+	}
+
+	private int detOrdemNOtimizadoV1(Matriz mat){
 		int sinal, cofator, detTemp, resposta, contC, contL, numL, numC;
 		Matriz matmenor;
 		numL = this.getTamanhoLinha();
 		numC = this.getTamanhoColuna();
 
 		resposta = 0;
-		if(this.getQtdZerosLinhaOuColuna() == this.getTamanhoLinha() || this.isProp()
-                    || this.isElementoLinOuColIguais()) {
+
+		if(this.getEhLinha()) {
+			for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
+				cofator = mat.getValor(this.getIndexMaisZeros(), contC);
+				if(cofator == 0) {
+					resposta += cofator;
+				}
+				else {
+					sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
+					matmenor = new Matriz(numL-1,numC-1);
+					this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
+					detTemp = matmenor.determinante();
+					resposta = resposta + (cofator * sinal * detTemp);
+				}
+			}
+		}
+		else {
+			for(contL = 0; contL < mat.getTamanhoColuna(); contL++){
+				cofator = mat.getValor(contL, this.getIndexMaisZeros());
+				if(cofator == 0) {
+					resposta += cofator;
+				}
+				else {
+					sinal = this.calculaSinal(contL, this.getIndexMaisZeros());
+					matmenor = new Matriz(numL-1,numC-1);
+					this.copiaMatrizMaiorParaMenor(mat,matmenor,contL,this.getIndexMaisZeros());
+					detTemp = matmenor.determinante();
+					resposta = resposta + (cofator * sinal * detTemp);
+				}
+			}
+		}
+
+		return (resposta);
+	}
+
+	private int detOrdemNOtimizadoV2(Matriz mat){
+		int sinal, cofator, detTemp, resposta, contC, contL, numL, numC;
+		Matriz matmenor;
+		numL = this.getTamanhoLinha();
+		numC = this.getTamanhoColuna();
+
+		resposta = 0;
+		if(this.getQtdZerosLinhaOuColuna() == this.getTamanhoLinha() || this.getProp()
+				|| this.getElementoLinOuColIguais()) {
 			resposta = 0;
 		}
 		else {
-			if(this.isLinha()) {
+			if(this.getEhLinha()) {
 				for(contC = 0; contC < mat.getTamanhoColuna(); contC++){
 					cofator = mat.getValor(this.getIndexMaisZeros(), contC);
 					if(cofator == 0) {
 						resposta += cofator;
 					}
 					else {
-					sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
-					matmenor = new Matriz(numL-1,numC-1);
-					this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
-					detTemp = matmenor.determinante();
-					resposta = resposta + (cofator * sinal * detTemp);
+						sinal = this.calculaSinal(this.getIndexMaisZeros(),contC);
+						matmenor = new Matriz(numL-1,numC-1);
+						this.copiaMatrizMaiorParaMenor(mat,matmenor,this.getIndexMaisZeros(),contC);
+						detTemp = matmenor.determinanteOtimizadoV2();
+						resposta = resposta + (cofator * sinal * detTemp);
 					}
 				}
 			}
@@ -210,7 +271,7 @@ public class Matriz implements MetodosMatriz {
 						sinal = this.calculaSinal(contL, this.getIndexMaisZeros());
 						matmenor = new Matriz(numL-1,numC-1);
 						this.copiaMatrizMaiorParaMenor(mat,matmenor,contL,this.getIndexMaisZeros());
-						detTemp = matmenor.determinante();
+						detTemp = matmenor.determinanteOtimizadoV2();
 						resposta = resposta + (cofator * sinal * detTemp);
 					}
 				}
@@ -232,12 +293,60 @@ public class Matriz implements MetodosMatriz {
 				     break;
 			    case 2:  det = this.detOrdem2(this);;
 				     break;
-                case 3: det = this.detOrdem3(this);;
-                     break;
 			    default: det = this.detOrdemN(this);;
 				     break;
 			}
 			
+		}
+		else{
+			System.out.println("Matriz nao eh quadrada!! retornando 0");
+		}
+
+		return det;
+	}
+
+	public int determinanteOtimizadoV1(){
+		int ordem,det;
+
+		ordem = this.retorneOrdem();
+		det = 0;
+
+		if(ordem > 0){
+			switch (ordem) {
+				case 1:  det = this.detOrdem1(this);
+					break;
+				case 2:  det = this.detOrdem2(this);;
+					break;
+				default: det = this.detOrdemNOtimizadoV1(this);;
+					break;
+			}
+
+		}
+		else{
+			System.out.println("Matriz nao eh quadrada!! retornando 0");
+		}
+
+		return det;
+	}
+
+
+	public int determinanteOtimizadoV2(){
+		int ordem,det;
+
+		ordem = this.retorneOrdem();
+		det = 0;
+
+		if(ordem > 0){
+			switch (ordem) {
+				case 1:  det = this.detOrdem1(this);
+					break;
+				case 2:  det = this.detOrdem2(this);;
+					break;
+				case 3: det = this.detOrdem3(this);;
+					break;
+				default: det = this.detOrdemNOtimizadoV2(this);;
+					break;
+			}
 		}
 		else{
 			System.out.println("Matriz nao eh quadrada!! retornando 0");
@@ -257,16 +366,16 @@ public class Matriz implements MetodosMatriz {
 			for(j = 0; j < this.getTamanhoColuna(); j++) {
 				if(this.getValor(i, j) == 0) countL++;
 				if(this.getValor(j, i) == 0) countC++;
-				if(countC > maisZeros) {
-					maisZeros = countC;
-					index = i;
-					this.setLinha(false);
-				}
-				else if (countL > maisZeros){
-					maisZeros = countL;
-					index = i;
-					this.setLinha(true);
-				}
+			}
+			if(countC > maisZeros) {
+				maisZeros = countC;
+				index = i;
+				this.setEhLinha(false);
+			}
+			else if (countL > maisZeros){
+				maisZeros = countL;
+				index = i;
+				this.setEhLinha(true);
 			}
 		}
 		this.setIndexMaisZeros(index);
@@ -276,38 +385,38 @@ public class Matriz implements MetodosMatriz {
 	public static Matriz meuInicializa() {
 		Matriz mt = new Matriz(5, 5);
 		mt.setValor(0 , 0 , 2);
-		mt.setValor(0, 1, 2);
+		mt.setValor(0, 1, 1);
 		mt.setValor(0, 2, 4);
 		mt.setValor(0, 3, 4);
 		mt.setValor(0, 4, 2);
 		mt.setValor(1, 0, 3);
-		mt.setValor(1 , 1, 6);
+		mt.setValor(1 , 1, 0);
 		mt.setValor(1, 2, 9);
 		mt.setValor(1, 3, 12);
 		mt.setValor(1 , 4 ,5);
-		mt.setValor(2, 0, 5);
-		mt.setValor(2, 1, 10);
+		mt.setValor(2, 0, 1);
+		mt.setValor(2, 1, 0);
 		mt.setValor(2, 2, 6);
 		mt.setValor(2, 3, 1);
 		mt.setValor(2, 4, 2);
 		mt.setValor(3 , 0, 2);
-		mt.setValor(3, 1, 4);
+		mt.setValor(3, 1, 0);
 		mt.setValor(3, 2, 1);
 		mt.setValor(3, 3, 6);
 		mt.setValor(3, 4, 3);
 		mt.setValor(4,0 , 0);
 		mt.setValor(4, 1, 0);
-		mt.setValor(4 , 2, 0);
-		mt.setValor(4, 3, 0);
-		mt.setValor(4, 4, 0);
+		mt.setValor(4 , 2, 6);
+		mt.setValor(4, 3, 1);
+		mt.setValor(4, 4, 2);
 
 		return mt;
 	}
 
 	public static Matriz meuInicializa3por3() {
 		Matriz mt = new Matriz(3, 3);
-		mt.setValor(0 , 0 , 4); // 1 3 5 2 1
-		mt.setValor(0, 1, 6);	// 2 6 10 4 2
+		mt.setValor(0 , 0 , 4);
+		mt.setValor(0, 1, 6);
 		mt.setValor(0, 2, 8);
 		mt.setValor(1, 0, 2);
 		mt.setValor(1, 1, 6);
@@ -322,7 +431,7 @@ public class Matriz implements MetodosMatriz {
 
 	public int detOrdem3(Matriz mat) {
         int resultado;
-        if(mat.isProp() || mat.getQtdZerosLinhaOuColuna() == mat.getTamanhoLinha()) {
+        if(mat.getProp() || mat.getQtdZerosLinhaOuColuna() == mat.getTamanhoLinha()) {
             resultado = 0;
         }
         else {
@@ -339,50 +448,6 @@ public class Matriz implements MetodosMatriz {
 	    }
         return resultado;
     }
-
-	/*
-	public void encontraProporcional() {
-		int i, j, countL, countC, countIgualLinha, countIgualColuna, a;
-		boolean aux = false;
-		float[] vetLinha = new float[this.getTamanhoLinha()];
-		float[] vetColuna = new float[this.getTamanhoLinha()];
-		for(i = 0; i < this.getTamanhoLinha(); i++){
-			countC = 0;
-			countL = 0;
-			countIgualLinha = 0;
-			countIgualColuna = 0;
-			for(j = 0; j < this.getTamanhoColuna(); j++){
-				countIgualLinha = 0;
-				countIgualColuna = 0;
-				a = i + 1;
-				if(!(a > this.getTamanhoLinha() - 1)) {
-					if(this.getValor(i, j) == this.getValor(a, j)) countL++;
-					if(this.getValor(j, i) == this.getValor(j, a)) countC++;
-					if(!(this.getValor(i, j) == 0 || this.getValor(j, i) == 0)) {
-						vetLinha[j] = (float) this.getValor(a, j) / this.getValor(i, j);
-						vetColuna[j] = (float) this.getValor(j, a) / this.getValor(j, i);
-					}
-				}
-			}
-			for(int m = 0; m < vetLinha.length - 1; m++) {
-				a = m + 1;
-				if(!(a > this.getTamanhoLinha() - 1)) {
-					if(vetLinha[m] == vetLinha[a]) {
-						countIgualLinha++;
-					}
-					if(vetColuna[m] == vetColuna[a]) {
-						countIgualColuna++;
-					}
-				}
-			}
-			if(countL == this.getTamanhoLinha() || countC == this.getTamanhoColuna()
-				|| countIgualLinha == this.getTamanhoLinha() - 1 || countIgualColuna == this.getTamanhoColuna() - 1) {
-				aux = true;
-			}
-		}
-		this.setLinhaProp(aux);
-	}
-	*/
 
 	public void encontraProp() {
 		boolean prop, linhaProp, colunaProp;
